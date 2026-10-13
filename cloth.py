@@ -58,17 +58,7 @@ def load_data(path, modified_time):
 
     df = df.dropna(how="all").reset_index(drop=True)
 
-    
-    # Split the season column into separate columns
-    seasons = df["F season"].fillna("").str.split(",").apply(
-        lambda values: [value.strip() for value in values]
-    )
-    
-    for season in ["H", "F", "S", "W"]:
-        df[season] = seasons.apply(lambda values: int(season in values))
-    
-    # Remove the original combined season column
-    df = df.drop(columns=["F season"])
+
 
 
     return df
@@ -336,7 +326,7 @@ else:
         st.session_state.selected_ids = set()
         st.rerun()
 
-# ==================================================
+# ==================================================a
 # COMPLETE DATABASE
 # ==================================================
 
