@@ -13,7 +13,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("👗 My Wardrobe")
+st.title(":) za faul za ibrlegn")
 st.write("Search, filter, select, and download your clothing entries.")
 
 # ==================================================
