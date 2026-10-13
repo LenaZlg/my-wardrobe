@@ -8,7 +8,7 @@ from pathlib import Path
 # ==================================================
 
 st.set_page_config(
-    page_title="My Wardrobe",
+    page_title="slothcloth",
     page_icon=":)",
     layout="wide",
 )
