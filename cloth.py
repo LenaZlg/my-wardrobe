@@ -87,7 +87,7 @@ if clothes.empty:
 # COLUMN NAMES
 # ==================================================
 
-season_col = "F season"
+season_cols = ["H", "F", "S", "W"]
 style_col = "F art style"
 shoe_type_col = "F schuach art"
 
@@ -100,7 +100,7 @@ clothing_cols = [
 ]
 
 required_cols = [
-    season_col,
+    *season_cols,
     style_col,
     shoe_type_col,
     *clothing_cols,
@@ -116,10 +116,6 @@ if missing:
     st.write("Missing columns:", missing)
     st.write("Actual CSV columns:", clothes.columns.tolist())
     st.stop()
-
-# Create stable row IDs for selecting entries.
-clothes = clothes.copy()
-clothes["_id"] = clothes.index.astype(str)
 
 # ==================================================
 # SIDEBAR FILTERS
