@@ -59,7 +59,8 @@ def load_data(path, modified_time):
     df = df.dropna(how="all").reset_index(drop=True)
 
 
-
+    for season in ["H", "F", "S", "W"]:
+    df[season] = pd.to_numeric(df[season], errors="coerce").fillna(0).astype(int)
 
     return df
 
