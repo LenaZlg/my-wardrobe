@@ -23,7 +23,7 @@ st.write("Search, filter, select, and download your clothing entries.")
 BASE_DIR = Path(__file__).resolve().parent
 FILE_PATH = BASE_DIR / "cloth.csv"
 
-st.sidebar.caption("Wardrobe database: cloth.csv")
+st.sidebar.caption(" database: cloth.csv")
 
 if not FILE_PATH.is_file():
     st.error("Cannot find cloth.csv.")
@@ -121,7 +121,7 @@ if missing:
 # SIDEBAR FILTERS
 # ==================================================
 
-st.sidebar.header("🔎 Filter wardrobe")
+st.sidebar.header("🔎 Filter")
 
 
 def get_options(column):
@@ -233,7 +233,7 @@ def update_selection(item_id):
         st.session_state.selected_ids.discard(item_id)
 
 
-st.subheader(f"👚 Your wardrobe ({len(filtered)} entries)")
+st.subheader(f"  ({len(filtered)} entries)")
 
 if filtered.empty:
     st.info("No entries match your current filters.")
