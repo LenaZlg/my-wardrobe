@@ -1,13 +1,13 @@
-F season;F art style;F schuach art;schuach;hose;oberteil;jacke;kleid
-H, F;casual;lauf, sneakers;traillauf schwarz;balloon schw.;eng schw. lang mit kurzem schw strick;olive karo;
-H, F;schön;sneakers;vans klett, vans;schw. eng schlag;crop langärmlig (oliv?);kurz jeans schwarz;
-H, F;ausgehn party;ausgehn;boots, niedrige elegante, stiefelletten;;;jeans baggy grau;kleid blumen schösschen
-H, F, S;ausgehn party;ausgehn;boots, vans;schw. eng schlag;mesh lang + t shirt violett;;
-H, F, S;ausgehn party;ausgehn;boots, vans;balloon schw.;crop BH + mesh lang;violette lack;
-H, F;casual;;;;;;
-H, F;casual;lauf, sneakers;traillauf schwarz;balloon schw.;vans langärml weiss;olive karo;
-H, F, S;ausgehn party;ausgehn;boots, vans;schw. strumpfhose;mesh lang + t shirt lang oder langes violettes drunter mit schw tshirt oben;baggy hemd schnürlsamt/ jeans;
-S;casual, sport;lauf, sneaker;traillauf, trail adidas, vans;zebra schwarz radlhose;crop olivgrün;;
-H, F, W;elegant;ausgehn;boots, elegant;weit stoff schwarz luftig;taille schwarz langärml;langer grauer mantel;
-H, F, S;elegant;ausgehn;elegant;weit stoff schwarz higsh waist;gelb spitze;blazer schwarz;
-H, F, S, W;ausgehn party;ausgehn;boots, vans;jeans high waist weit;crop rückenfrei schwarz;violette lack;
+H;F;S;W;F art style;F schuach art;schuach;hose;oberteil;jacke;kleid
+1;1;0;0;casual;lauf, sneakers;traillauf schwarz;balloon schw.;eng schw. lang mit kurzem schw strick;olive karo;
+1;1;0;0;schÃ¶n;sneakers;vans klett, vans;schw. eng schlag;crop langÃ¤rmlig (oliv?);kurz jeans schwarz;
+1;1;0;0;ausgehn party;ausgehn;boots, niedrige elegante, stiefelletten;jeans baggy grau;kleid blumen schÃ¶sschen;;
+1;1;1;0;ausgehn party;ausgehn;boots, vans;schw. eng schlag;mesh lang + t shirt violett;;
+1;1;1;0;ausgehn party;ausgehn;boots, vans;balloon schw.;crop BH + mesh lang;violette lack;
+1;1;0;0;casual;;;;;;
+1;1;0;0;casual;lauf, sneakers;traillauf schwarz;balloon schw.;vans langÃ¤rml weiss;olive karo;
+1;1;1;0;ausgehn party;ausgehn;boots, vans;schw. strumpfhose;mesh lang + t shirt lang oder langes violettes drunter mit schw tshirt oben;baggy hemd schnÃ¼rlsamt/ jeans;
+0;0;1;0;casual, sport;lauf, sneaker;traillauf, trail adidas, vans;zebra schwarz radlhose;crop olivgrÃ¼n;;
+1;1;0;1;elegant;ausgehn;boots, elegant;weit stoff schwarz luftig;taille schwarz langÃ¤rml;langer grauer mantel;
+1;1;1;0;elegant;ausgehn;elegant;weit stoff schwarz higsh waist;gelb spitze;blazer schwarz;
+1;1;1;1;ausgehn party;ausgehn;boots, vans;jeans high waist weit;crop rÃ¼ckenfrei schwarz;violette lack;
