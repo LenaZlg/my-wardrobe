@@ -134,9 +134,9 @@ search = st.sidebar.text_input(
     placeholder="e.g. jeans, summer, elegant...",
 )
 
-seasons = st.sidebar.multiselect(
+selected_seasons = st.sidebar.multiselect(
     "Season",
-    options=get_options(season_col),
+    options=season_cols,
 )
 
 styles = st.sidebar.multiselect(
@@ -176,9 +176,9 @@ if search.strip():
 
     filtered = filtered[search_mask]
 
-if seasons:
+if selected_seasons:
     filtered = filtered[
-        filtered[season_col].astype(str).isin(seasons)
+        filtered[selected_seasons].eq(1).any(axis=1)
     ]
 
 if styles:
@@ -254,8 +254,12 @@ else:
 
             info1, info2, info3 = st.columns(3)
 
-            info1.markdown("**🌦️ Season**")
-            info1.write(str(item[season_col]))
+            info1.markdown("**🌦️ Seasons**")
+            active_seasons = [
+                season for season in season_cols
+                if item[season] == 1
+            ]
+            info1.write(", ".join(active_seasons) if active_seasons else "—")
 
             info2.markdown("**🎨 Art style**")
             info2.write(str(item[style_col]))
