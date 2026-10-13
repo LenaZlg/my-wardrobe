@@ -60,7 +60,7 @@ def load_data(path, modified_time):
 
 
     for season in ["H", "F", "S", "W"]:
-    df[season] = pd.to_numeric(df[season], errors="coerce").fillna(0).astype(int)
+        df[season] = pd.to_numeric(df[season], errors="coerce").fillna(0).astype(int)
 
     return df
 
