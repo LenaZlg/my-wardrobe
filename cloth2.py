@@ -7,13 +7,13 @@ from pathlib import Path
 # ==================================================
 
 st.set_page_config(
-    page_title="My Wardrobe",
-    page_icon="👗",
+    page_title="Lz clothsloth",
+    page_icon="",
     layout="wide",
 )
 
-st.title("👗 My Wardrobe")
-st.write("Search, filter, select, and download your clothing entries.")
+st.title("")
+st.write("Search, filter, select, and download your entries.")
 
 # ==================================================
 # COLUMN NAMES
@@ -125,7 +125,7 @@ except Exception as error:
     st.stop()
 
 if clothes.empty:
-    st.warning("The CSV contains no clothing entries.")
+    st.warning("The CSV contains no entries.")
     st.write("Detected columns:", clothes.columns.tolist())
     st.stop()
 
@@ -154,7 +154,7 @@ clothes["_id"] = clothes.index.astype(str)
 # SIDEBAR FILTERS
 # ==================================================
 
-st.sidebar.header("🔎 Filter wardrobe")
+st.sidebar.header("🔎 Filter")
 
 
 def get_options(column):
@@ -170,7 +170,7 @@ def reset_filters():
 
 
 search = st.sidebar.text_input(
-    "Search all clothing columns",
+    "Search all columns",
     placeholder="e.g. jeans, vans, elegant...",
     key="f_search",
 )
