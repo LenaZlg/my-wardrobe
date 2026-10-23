@@ -285,7 +285,7 @@ if filtered.empty:
 
 else:
     # Statt fixer Zahl:
-cards_per_row = st.sidebar.slider(
+    cards_per_row = st.sidebar.slider(
     "Karten pro Reihe", min_value=2, max_value=6, value=3
 )
 
