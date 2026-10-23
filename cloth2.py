@@ -7,12 +7,12 @@ from pathlib import Path
 # ==================================================
 
 st.set_page_config(
-    page_title="Lz clothsloth",
+    page_title="Lz",
     page_icon="",
     layout="wide",
 )
 
-st.title("")
+st.title("Lz")
 st.write("Search, filter, select, and download your entries.")
 
 # ==================================================
@@ -53,7 +53,7 @@ required_cols = [
 BASE_DIR = Path(__file__).resolve().parent
 FILE_PATH = BASE_DIR / "cloth.csv"
 
-st.sidebar.caption("Wardrobe database: cloth.csv")
+st.sidebar.caption("Database: cloth.csv")
 
 if not FILE_PATH.is_file():
     st.error("Cannot find cloth.csv.")
@@ -65,7 +65,7 @@ if not FILE_PATH.is_file():
     st.write(sorted(p.name for p in BASE_DIR.iterdir()))
 
     st.warning(
-        "Place cloth.csv in the same folder as cloth.py. "
+        "Place cloth.csv in the same folder as this Python script. "
         "Check the exact filename and file extension."
     )
     st.stop()
@@ -116,7 +116,7 @@ def load_data(path, modified_time):
 
 
 try:
-    clothes = load_data(
+    data = load_data(
         str(FILE_PATH),
         FILE_PATH.stat().st_mtime,
     )
@@ -124,23 +124,23 @@ except Exception as error:
     st.error(f"Could not read cloth.csv: {error}")
     st.stop()
 
-if clothes.empty:
+if data.empty:
     st.warning("The CSV contains no entries.")
-    st.write("Detected columns:", clothes.columns.tolist())
+    st.write("Detected columns:", data.columns.tolist())
     st.stop()
 
-missing = [c for c in required_cols if c not in clothes.columns]
+missing = [c for c in required_cols if c not in data.columns]
 
 if missing:
     st.error("Some required columns are missing.")
     st.write("Missing columns:", missing)
-    st.write("Actual CSV columns:", clothes.columns.tolist())
+    st.write("Actual CSV columns:", data.columns.tolist())
     st.stop()
 
-clothes = clothes.copy()
+data = data.copy()
 
 # Readable season text for each entry, e.g. "H, F"
-clothes["season"] = clothes[SEASON_FLAGS].apply(
+data["season"] = data[SEASON_FLAGS].apply(
     lambda row: ", ".join(
         SEASON_LABELS[flag] for flag in SEASON_FLAGS if row[flag] == 1
     ),
@@ -148,7 +148,7 @@ clothes["season"] = clothes[SEASON_FLAGS].apply(
 )
 
 # Stable row IDs for selecting entries.
-clothes["_id"] = clothes.index.astype(str)
+data["_id"] = data.index.astype(str)
 
 # ==================================================
 # SIDEBAR FILTERS
@@ -158,7 +158,7 @@ st.sidebar.header("🔎 Filter")
 
 
 def get_options(column):
-    values = clothes[column].dropna().astype(str).str.strip()
+    values = data[column].dropna().astype(str).str.strip()
     return sorted(values[values != ""].unique().tolist())
 
 
@@ -200,7 +200,7 @@ st.sidebar.button("Reset filters", on_click=reset_filters)
 # APPLY FILTERS
 # ==================================================
 
-filtered = clothes.copy()
+filtered = data.copy()
 
 if search.strip():
     searchable = filtered.drop(columns=["_id", "season", *SEASON_FLAGS])
@@ -239,7 +239,7 @@ if shoe_types:
 if "selected_ids" not in st.session_state:
     st.session_state.selected_ids = set()
 
-st.session_state.selected_ids.intersection_update(set(clothes["_id"]))
+st.session_state.selected_ids.intersection_update(set(data["_id"]))
 
 # ==================================================
 # SUMMARY
@@ -247,7 +247,7 @@ st.session_state.selected_ids.intersection_update(set(clothes["_id"]))
 
 col1, col2, col3 = st.columns(3)
 
-col1.metric("Total entries", len(clothes))
+col1.metric("Total entries", len(data))
 col2.metric("Matching entries", len(filtered))
 col3.metric("Selected entries", len(st.session_state.selected_ids))
 
@@ -274,7 +274,7 @@ def clear_selections():
     st.session_state.selected_ids = set()
 
 
-st.subheader(f"👚 Your wardrobe ({len(filtered)} entries)")
+st.subheader(f"Your entries ({len(filtered)} entries)")
 
 if filtered.empty:
     st.info("No entries match your current filters.")
@@ -303,7 +303,7 @@ else:
             info3.markdown("**👟 Shoe type**")
             info3.write(str(item[shoe_type_col]))
 
-            st.markdown("**Clothing items**")
+            st.markdown("**Items**")
 
             item_columns = st.columns(len(clothing_cols))
 
@@ -331,8 +331,8 @@ else:
 st.divider()
 st.subheader("✅ Selected entries")
 
-selected = clothes[
-    clothes["_id"].isin(st.session_state.selected_ids)
+selected = data[
+    data["_id"].isin(st.session_state.selected_ids)
 ].drop(columns=["_id", "season"])
 
 if selected.empty:
@@ -353,7 +353,7 @@ else:
             index=False,
             sep=";",
         ).encode("utf-8-sig"),
-        file_name="my_selected_clothes.csv",
+        file_name="my_selected_entries.csv",
         mime="text/csv",
     )
 
@@ -363,11 +363,11 @@ else:
 # COMPLETE DATABASE
 # ==================================================
 
-with st.expander("📋 Show complete clothing database"):
+with st.expander("📋 Show complete database"):
     st.write("Loaded from:", str(FILE_PATH))
 
     st.dataframe(
-        clothes.drop(columns=["_id", "season"]),
+        data.drop(columns=["_id", "season"]),
         use_container_width=True,
         hide_index=True,
-    )
+)
