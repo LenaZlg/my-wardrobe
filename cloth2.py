@@ -10,6 +10,7 @@ st.set_page_config(
     page_title="Lz",
     page_icon="",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 st.title("Lz")
@@ -280,49 +281,50 @@ if filtered.empty:
     st.info("No entries match your current filters.")
 
 else:
-    for _, item in filtered.iterrows():
-        item_id = item["_id"]
-        checkbox_key = f"select_{item_id}"
+    # Compact grid: multiple entries side by side.
+    cards_per_row = 3
+    rows = [filtered.iloc[i:i + cards_per_row] for i in range(0, len(filtered), cards_per_row)]
 
-        if checkbox_key not in st.session_state:
-            st.session_state[checkbox_key] = (
-                item_id in st.session_state.selected_ids
-            )
+    for row_items in rows:
+        columns = st.columns(cards_per_row, gap="small")
 
-        with st.container(border=True):
-            st.subheader(f"Entry {int(item_id) + 1}")
+        for column, (_, item) in zip(columns, row_items.iterrows()):
+            item_id = item["_id"]
+            checkbox_key = f"select_{item_id}"
 
-            info1, info2, info3 = st.columns(3)
+            if checkbox_key not in st.session_state:
+                st.session_state[checkbox_key] = (
+                    item_id in st.session_state.selected_ids
+                )
 
-            info1.markdown("**🌦️ Season**")
-            info1.write(item["season"] or "—")
+            with column:
+                with st.container(border=True):
+                    st.markdown(f"**Entry {int(item_id) + 1}**")
 
-            info2.markdown("**🎨 Art style**")
-            info2.write(str(item[style_col]))
+                    # Keep key information on one compact line.
+                    st.caption(
+                        f"🌦️ {item['season'] or '—'}  ·  "
+                        f"🎨 {item[style_col] or '—'}  ·  "
+                        f"👟 {item[shoe_type_col] or '—'}"
+                    )
 
-            info3.markdown("**👟 Shoe type**")
-            info3.write(str(item[shoe_type_col]))
+                    # Display item values compactly in two columns.
+                    value_columns = st.columns(2, gap="small")
+                    for index, name in enumerate(clothing_cols):
+                        value = item[name]
+                        with value_columns[index % 2]:
+                            st.caption(name.title())
+                            if pd.isna(value) or str(value).strip() == "":
+                                st.write("—")
+                            else:
+                                st.write(str(value))
 
-            st.markdown("**Items**")
-
-            item_columns = st.columns(len(clothing_cols))
-
-            for col, name in zip(item_columns, clothing_cols):
-                with col:
-                    value = item[name]
-                    st.caption(name.title())
-
-                    if pd.isna(value) or str(value).strip() == "":
-                        st.write("—")
-                    else:
-                        st.write(str(value))
-
-            st.checkbox(
-                "Select this entry",
-                key=checkbox_key,
-                on_change=update_selection,
-                args=(item_id,),
-            )
+                    st.checkbox(
+                        "Select",
+                        key=checkbox_key,
+                        on_change=update_selection,
+                        args=(item_id,),
+                    )
 
 # ==================================================
 # SELECTED ENTRIES
@@ -370,4 +372,4 @@ with st.expander("📋 Show complete database"):
         data.drop(columns=["_id", "season"]),
         use_container_width=True,
         hide_index=True,
-)
+    )
