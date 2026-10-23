@@ -275,7 +275,7 @@ def clear_selections():
     st.session_state.selected_ids = set()
 
 
-st.subheader(f"Your entries ({len(filtered)} entries)")
+#st.subheader(f"Your entries ({len(filtered)} entries)")
 
 if filtered.empty:
     st.info("No entries match your current filters.")
