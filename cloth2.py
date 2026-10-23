@@ -363,13 +363,3 @@ else:
 
 # ==================================================
 # COMPLETE DATABASE
-# ==================================================
-
-with st.expander("📋 Show complete database"):
-    st.write("Loaded from:", str(FILE_PATH))
-
-    st.dataframe(
-        data.drop(columns=["_id", "season"]),
-        use_container_width=True,
-        hide_index=True,
-    )
