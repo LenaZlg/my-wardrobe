@@ -280,7 +280,15 @@ def clear_selections():
 if filtered.empty:
     st.info("No entries match your current filters.")
 
+
+# 
+
 else:
+    # Statt fixer Zahl:
+cards_per_row = st.sidebar.slider(
+    "Karten pro Reihe", min_value=2, max_value=6, value=3
+)
+
     # Compact grid: multiple entries side by side.
     cards_per_row = 3
     rows = [filtered.iloc[i:i + cards_per_row] for i in range(0, len(filtered), cards_per_row)]
