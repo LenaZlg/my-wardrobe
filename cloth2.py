@@ -7,14 +7,14 @@ import streamlit as st
 # ==================================================
 
 st.set_page_config(
-    page_title="Lz",
+    page_title="clothsloth",
     page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-st.title("Lz")
-st.write("Search, filter, select, and download your entries.")
+#st.title("Lz")
+#st.write("Search, filter, select, and download your entries.")
 
 # ==================================================
 # COLUMN NAMES
@@ -247,13 +247,13 @@ st.session_state.selected_ids.intersection_update(set(data["_id"]))
 # SUMMARY
 # ==================================================
 
-col1, col2, col3 = st.columns(3)
+#col1, col2, col3 = st.columns(3)
 
-col1.metric("Total entries", len(data))
-col2.metric("Matching entries", len(filtered))
-col3.metric("Selected entries", len(st.session_state.selected_ids))
+#col1.metric("Total entries", len(data))
+#col2.metric("Matching entries", len(filtered))
+#col3.metric("Selected entries", len(st.session_state.selected_ids))
 
-st.divider()
+#st.divider()
 
 # ==================================================
 # DISPLAY ENTRIES
@@ -329,8 +329,8 @@ else:
 # SELECTED ENTRIES
 # ==================================================
 
-st.divider()
-st.subheader("✅ Selected entries")
+#st.divider()
+#st.subheader("✅ Selected entries")
 
 selected = data[data["_id"].isin(st.session_state.selected_ids)].drop(
     columns=["_id", "season"]
