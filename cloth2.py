@@ -1,9 +1,10 @@
+
 from pathlib import Path
+from io import StringIO
+import base64
+
 import pandas as pd
 import streamlit as st
-
-
-
 
 
 # ==================================================
@@ -17,157 +18,187 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-#st.title("Lz")
-#st.write("Search, filter, select, and download your entries.")
 
 # ==================================================
-# CUSTOM DESIGN
-# 
-
-
-import base64
-
-# Put this after st.set_page_config(...)
+# PATHS
+# ==================================================
 
 BASE_DIR = Path(__file__).resolve().parent
+FILE_PATH = BASE_DIR / "cloth.csv"
 BACKGROUND_PATH = BASE_DIR / "IMG-20261024-WA0042.jpg"
+
+
+# ==================================================
+# BACKGROUND IMAGE & CUSTOM DESIGN
+# ==================================================
 
 if BACKGROUND_PATH.is_file():
     encoded_image = base64.b64encode(
         BACKGROUND_PATH.read_bytes()
-    ).decode()
+    ).decode("utf-8")
 
-    st.markdown(
-        f"""
-        <style>
-        [data-testid="stAppViewContainer"] {{
-            background-image:
-                linear-gradient(
-                    rgba(247, 246, 242, 0.35),
-                    rgba(247, 246, 242, 0.35)
-                ),
-                url("data:image/jpeg;base64,{encoded_image}");
-
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }}
-
-        [data-testid="stHeader"] {{
-            background: transparent;
-        }}
-
-        [data-testid="stSidebar"] {{
-            background-color: rgba(234, 237, 229, 0.94);
-        }}
-
-        [data-testid="stVerticalBlockBorderWrapper"] {{
-            background-color: rgba(255, 255, 255, 0.94);
-            border-radius: 16px;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    background_css = f"""
+    background-image:
+        linear-gradient(
+            rgba(247, 246, 242, 0.35),
+            rgba(247, 246, 242, 0.35)
+        ),
+        url("data:image/jpeg;base64,{encoded_image}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    """
 else:
-    st.warning("Add background.jpg to your app folder.")
+    background_css = "background-color: #F7F6F2;"
+
+    st.warning(
+        "Background image not found. "
+        "Place IMG-20261024-WA0042.jpg next to cloth2.py."
+    )
 
 
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background-color: #EAEDE5;
-    border-right: 1px solid #D8DED2;
-}
+st.markdown(
+    f"""
+    <style>
 
-/* Main content spacing */
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-}
+    /* Main background */
+    [data-testid="stAppViewContainer"] {{
+        {background_css}
+    }}
 
-/* Entry cards */
-[data-testid="stVerticalBlockBorderWrapper"] {
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7E0;
-    border-radius: 16px;
-    padding: 8px;
-    box-shadow: 0 2px 8px rgba(40, 50, 40, 0.04);
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
+    /* Transparent header */
+    [data-testid="stHeader"] {{
+        background: transparent;
+    }}
 
-/* Hover effect */
-[data-testid="stVerticalBlockBorderWrapper"]:hover {
-    border-color: #A4B59B;
-    box-shadow: 0 5px 16px rgba(40, 50, 40, 0.09);
-}
+    /* Main page spacing */
+    .block-container {{
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }}
 
-/* Headings */
-h1, h2, h3 {
-    color: #354638 !important;
-    letter-spacing: -0.5px;
-}
+    /* Sidebar */
+    [data-testid="stSidebar"] {{
+        background-color: rgba(234, 237, 229, 0.96);
+        border-right: 1px solid #D8DED2;
+    }}
 
-/* Small text */
-[data-testid="stCaptionContainer"] {
-    color: #788174;
-}
+    /* Headings */
+    h1, h2, h3 {{
+        color: #354638 !important;
+        letter-spacing: -0.5px;
+    }}
 
-/* Buttons */
-.stButton > button,
-.stDownloadButton > button {
-    background-color: #526B52;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 0.5rem 1rem;
-    transition: background-color 0.2s;
-}
+    /* Card containers */
+    [data-testid="stVerticalBlockBorderWrapper"] {{
+        background-color: rgba(255, 255, 255, 0.94);
+        border: 1px solid #E5E7E0;
+        border-radius: 16px;
+        box-shadow: 0 3px 12px rgba(40, 50, 40, 0.07);
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }}
 
-/* Button hover */
-.stButton > button:hover,
-.stDownloadButton > button:hover {
-    background-color: #3D543E;
-    color: white;
-    border: none;
-}
+    [data-testid="stVerticalBlockBorderWrapper"]:hover {{
+        border-color: #A4B59B;
+        box-shadow: 0 5px 16px rgba(40, 50, 40, 0.12);
+    }}
 
-/* Expandable details */
-[data-testid="stExpander"] {
-    background-color: #F4F6F0;
-    border: 1px solid #E0E5DA;
-    border-radius: 10px;
-}
+    /* Caption text */
+    [data-testid="stCaptionContainer"] {{
+        color: #788174;
+    }}
 
-/* Text input fields */
-[data-testid="stTextInput"] input {
-    border-radius: 10px;
-}
+    /* Buttons */
+    .stButton > button,
+    .stDownloadButton > button {{
+        background-color: #526B52;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        transition: background-color 0.2s;
+    }}
 
-/* Multiselect fields */
-[data-testid="stMultiSelect"] [data-baseweb="select"] {
-    border-radius: 10px;
-}
+    .stButton > button:hover,
+    .stDownloadButton > button:hover {{
+        background-color: #3D543E;
+        color: white;
+        border: none;
+    }}
 
-/* Checkboxes */
-[data-testid="stCheckbox"] {
-    padding-top: 4px;
-}
+    /* Expandable details */
+    [data-testid="stExpander"] {{
+        background-color: rgba(244, 246, 240, 0.95);
+        border: 1px solid #E0E5DA;
+        border-radius: 10px;
+    }}
 
-</style>
-""", unsafe_allow_html=True)
+    /* Input fields */
+    [data-testid="stTextInput"] input {{
+        border-radius: 10px;
+    }}
+
+    [data-testid="stMultiSelect"] [data-baseweb="select"] {{
+        border-radius: 10px;
+    }}
+
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+# ==================================================
+# APP TITLE
+# ==================================================
+
+st.markdown(
+    """
+    <div style="padding: 8px 0 24px 0;">
+        <div style="
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: #526B52;
+            font-weight: 600;
+            text-transform: uppercase;
+        ">
+            YOUR PERSONAL WARDROBE
+        </div>
+
+        <div style="
+            font-size: 42px;
+            font-weight: 750;
+            letter-spacing: -2px;
+            color: #354638;
+            line-height: 1.2;
+        ">
+            clothsloth<span style="color:#A4B59B;">.</span>
+        </div>
+
+        <div style="
+            font-size: 15px;
+            color: #626B60;
+            margin-top: 8px;
+        ">
+            Find your style. Rediscover your wardrobe.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 # ==================================================
 # COLUMN NAMES
 # ==================================================
 
-# Season flag columns (0/1). Edit the labels here if you like.
 SEASON_LABELS = {
     "H": "H",
     "F": "F",
     "S": "S",
     "W": "W",
 }
+
 SEASON_FLAGS = list(SEASON_LABELS.keys())
 
 style_col = "F art style"
@@ -188,107 +219,127 @@ required_cols = [
     *clothing_cols,
 ]
 
+
 # ==================================================
 # FIND AND LOAD cloth.csv
 # ==================================================
 
-BASE_DIR = Path(__file__).resolve().parent
-FILE_PATH = BASE_DIR / "cloth.csv"
-
 st.sidebar.caption("Database: cloth.csv")
 
+
 if not FILE_PATH.is_file():
-  st.error("Cannot find cloth.csv.")
-  st.write("Python script:", str(Path(__file__).resolve()))
-  st.write("Folder being searched:", str(BASE_DIR))
-  st.write("Expected CSV path:", str(FILE_PATH))
+    st.error("Cannot find cloth.csv.")
 
-  st.write("Files found in this folder:")
-  st.write(sorted(p.name for p in BASE_DIR.iterdir()))
+    st.write("Python script:", str(Path(__file__).resolve()))
+    st.write("Folder being searched:", str(BASE_DIR))
+    st.write("Expected CSV path:", str(FILE_PATH))
 
-  st.warning(
-      "Place cloth.csv in the same folder as this Python script. "
-      "Check the exact filename and file extension."
-  )
-  st.stop()
+    st.write("Files found in this folder:")
+    st.write(sorted(p.name for p in BASE_DIR.iterdir()))
+
+    st.warning(
+        "Place cloth.csv in the same folder as this Python script. "
+        "Check the exact filename and file extension."
+    )
+
+    st.stop()
 
 
 def read_text(path):
-  raw = Path(path).read_bytes()
-  for encoding in ("utf-8-sig", "cp1252"):
-    try:
-      return raw.decode(encoding)
-    except UnicodeDecodeError:
-      continue
-  return raw.decode("latin-1")
+    raw = Path(path).read_bytes()
+
+    for encoding in ("utf-8-sig", "cp1252"):
+        try:
+            return raw.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+
+    return raw.decode("latin-1")
 
 
 @st.cache_data
 def load_data(path, modified_time):
-  from io import StringIO
+    text = read_text(path)
 
-  text = read_text(path)
+    # Detect CSV delimiter from the header.
+    header = text.splitlines()[0]
+    sep = max([";", "\t", ","], key=header.count)
 
-  # Detect the delimiter from the header line.
-  header = text.splitlines()[0]
-  sep = max([";", "\t", ","], key=header.count)
+    df = pd.read_csv(
+        StringIO(text),
+        sep=sep,
+        dtype=str,
+    )
 
-  df = pd.read_csv(StringIO(text), sep=sep, dtype=str)
+    # Clean column names.
+    df.columns = (
+        df.columns.astype(str)
+        .str.replace("\ufeff", "", regex=False)
+        .str.replace("\xa0", " ", regex=False)
+        .str.replace(r"\s+", " ", regex=True)
+        .str.strip()
+    )
 
-  df.columns = (
-      df.columns.astype(str)
-      .str.replace("\ufeff", "", regex=False)
-      .str.replace("\xa0", " ", regex=False)
-      .str.replace(r"\s+", " ", regex=True)
-      .str.strip()
-  )
+    df = df.dropna(how="all").reset_index(drop=True)
 
-  df = df.dropna(how="all").reset_index(drop=True)
+    # Season columns -> clean 0/1 integers.
+    for flag in SEASON_FLAGS:
+        if flag in df.columns:
+            df[flag] = (
+                pd.to_numeric(df[flag], errors="coerce")
+                .fillna(0)
+                .astype(int)
+            )
 
-  # Season columns -> clean 0/1 integers
-  for flag in SEASON_FLAGS:
-    if flag in df.columns:
-      df[flag] = (
-          pd.to_numeric(df[flag], errors="coerce").fillna(0).astype(int)
-      )
-
-  return df
+    return df
 
 
 try:
-  data = load_data(
-      str(FILE_PATH),
-      FILE_PATH.stat().st_mtime,
-  )
+    data = load_data(
+        str(FILE_PATH),
+        FILE_PATH.stat().st_mtime,
+    )
 except Exception as error:
-  st.error(f"Could not read cloth.csv: {error}")
-  st.stop()
+    st.error(f"Could not read cloth.csv: {error}")
+    st.stop()
+
 
 if data.empty:
-  st.warning("The CSV contains no entries.")
-  st.write("Detected columns:", data.columns.tolist())
-  st.stop()
+    st.warning("The CSV contains no entries.")
+    st.write("Detected columns:", data.columns.tolist())
+    st.stop()
 
-missing = [c for c in required_cols if c not in data.columns]
+
+missing = [
+    column for column in required_cols
+    if column not in data.columns
+]
 
 if missing:
-  st.error("Some required columns are missing.")
-  st.write("Missing columns:", missing)
-  st.write("Actual CSV columns:", data.columns.tolist())
-  st.stop()
+    st.error("Some required columns are missing.")
+    st.write("Missing columns:", missing)
+    st.write("Actual CSV columns:", data.columns.tolist())
+    st.stop()
+
 
 data = data.copy()
 
-# Readable season text for each entry, e.g. "H, F"
+
+# ==================================================
+# SEASON LABELS & ENTRY IDS
+# ==================================================
+
 data["season"] = data[SEASON_FLAGS].apply(
     lambda row: ", ".join(
-        SEASON_LABELS[flag] for flag in SEASON_FLAGS if row[flag] == 1
+        SEASON_LABELS[flag]
+        for flag in SEASON_FLAGS
+        if row[flag] == 1
     ),
     axis=1,
 )
 
-# Stable row IDs for selecting entries.
 data["_id"] = data.index.astype(str)
+
 
 # ==================================================
 # SIDEBAR FILTERS & SETTINGS
@@ -298,20 +349,25 @@ st.sidebar.header("🔎 Filter & Ansicht")
 
 
 def get_options(column):
-  values = data[column].dropna().astype(str).str.strip()
-  return sorted(values[values != ""].unique().tolist())
+    values = data[column].dropna().astype(str).str.strip()
+
+    return sorted(
+        values[values != ""].unique().tolist()
+    )
 
 
 def reset_filters():
-  st.session_state["f_search"] = ""
-  st.session_state["f_seasons"] = []
-  st.session_state["f_styles"] = []
-  st.session_state["f_shoes"] = []
+    st.session_state["f_search"] = ""
+    st.session_state["f_seasons"] = []
+    st.session_state["f_styles"] = []
+    st.session_state["f_shoes"] = []
 
 
-# Layout-Einstellung direkt in der Sidebar
 cards_per_row = st.sidebar.slider(
-    "Karten pro Reihe", min_value=1, max_value=6, value=3
+    "Cards per row",
+    min_value=1,
+    max_value=6,
+    value=3,
 )
 
 search = st.sidebar.text_input(
@@ -339,7 +395,11 @@ shoe_types = st.sidebar.multiselect(
     key="f_shoes",
 )
 
-st.sidebar.button("Reset filters", on_click=reset_filters)
+st.sidebar.button(
+    "Reset filters",
+    on_click=reset_filters,
+)
+
 
 # ==================================================
 # APPLY FILTERS
@@ -348,57 +408,66 @@ st.sidebar.button("Reset filters", on_click=reset_filters)
 filtered = data.copy()
 
 if search.strip():
-  searchable = filtered.drop(columns=["_id", "season", *SEASON_FLAGS])
-  search_mask = (
-      searchable.astype(str)
-      .apply(
-          lambda column: column.str.contains(
-              search.strip(),
-              case=False,
-              regex=False,
-              na=False,
-          )
-      )
-      .any(axis=1)
-  )
-  filtered = filtered[search_mask]
+    searchable = filtered.drop(
+        columns=["_id", "season", *SEASON_FLAGS]
+    )
+
+    search_mask = (
+        searchable.astype(str)
+        .apply(
+            lambda column: column.str.contains(
+                search.strip(),
+                case=False,
+                regex=False,
+                na=False,
+            )
+        )
+        .any(axis=1)
+    )
+
+    filtered = filtered[search_mask]
+
 
 if seasons:
-  season_mask = (filtered[seasons] == 1).any(axis=1)
-  filtered = filtered[season_mask]
+    season_mask = (
+        filtered[seasons] == 1
+    ).any(axis=1)
+
+    filtered = filtered[season_mask]
+
 
 if styles:
-  filtered = filtered[filtered[style_col].astype(str).str.strip().isin(styles)]
+    filtered = filtered[
+        filtered[style_col]
+        .astype(str)
+        .str.strip()
+        .isin(styles)
+    ]
+
 
 if shoe_types:
-  filtered = filtered[
-      filtered[shoe_type_col].astype(str).str.strip().isin(shoe_types)
-  ]
+    filtered = filtered[
+        filtered[shoe_type_col]
+        .astype(str)
+        .str.strip()
+        .isin(shoe_types)
+    ]
+
 
 # ==================================================
 # SELECTION STATE
 # ==================================================
 
 if "selected_ids" not in st.session_state:
-  st.session_state.selected_ids = set()
+    st.session_state.selected_ids = set()
 
-st.session_state.selected_ids.intersection_update(set(data["_id"]))
-
-# ==================================================
-# SUMMARY
-# ==================================================
-
-#col1, col2, col3 = st.columns(3)
-
-#col1.metric("Total entries", len(data))
-#col2.metric("Matching entries", len(filtered))
-#col3.metric("Selected entries", len(st.session_state.selected_ids))
-
-#st.divider()
+st.session_state.selected_ids.intersection_update(
+    set(data["_id"])
+)
 
 
 # ==================================================
-# DISPLAY ENTRIES
+# SELECTION CALLBACKS
 # ==================================================
 
 def update_selection(item_id):
@@ -414,22 +483,43 @@ def clear_selections():
     for key in list(st.session_state.keys()):
         if key.startswith("select_"):
             del st.session_state[key]
+
     st.session_state.selected_ids = set()
 
+
+# ==================================================
+# RESULTS SUMMARY
+# ==================================================
+
+st.caption(
+    f"{len(filtered)} matching entries · "
+    f"{len(st.session_state.selected_ids)} selected"
+)
+
+
+# ==================================================
+# DISPLAY ENTRIES
+# ==================================================
 
 if filtered.empty:
     st.info("No entries match your current filters.")
 
 else:
     rows = [
-        filtered.iloc[i : i + cards_per_row]
+        filtered.iloc[i:i + cards_per_row]
         for i in range(0, len(filtered), cards_per_row)
     ]
 
     for row_items in rows:
-        columns = st.columns(cards_per_row, gap="small")
+        columns = st.columns(
+            cards_per_row,
+            gap="small",
+        )
 
-        for column, (_, item) in zip(columns, row_items.iterrows()):
+        for column, (_, item) in zip(
+            columns,
+            row_items.iterrows(),
+        ):
             item_id = item["_id"]
             checkbox_key = f"select_{item_id}"
 
@@ -439,20 +529,25 @@ else:
                 )
 
             with column:
-                with st.container(border=True, gap="small"):
-                    st.markdown(f"**#{int(item_id) + 1}**")
-
-                    st.caption(
-                        f"{item['season'] or '—'} · "
-                        f"{item[style_col] or '—'} · "
-                        f"{item[shoe_type_col] or '—'}"
+                with st.container(border=True):
+                    st.markdown(
+                        f"### #{int(item_id) + 1}"
                     )
 
-                    with st.expander("Details"):
+                    st.caption(
+                        f"🌦️ {item['season'] or '—'}  ·  "
+                        f"🎨 {item[style_col] or '—'}  ·  "
+                        f"👟 {item[shoe_type_col] or '—'}"
+                    )
+
+                    with st.expander("View clothing details"):
                         for name in clothing_cols:
                             value = item[name]
 
-                            if pd.isna(value) or not str(value).strip():
+                            if (
+                                pd.isna(value)
+                                or not str(value).strip()
+                            ):
                                 continue
 
                             st.markdown(
@@ -467,42 +562,43 @@ else:
                     )
 
 
-
 # ==================================================
 # SELECTED ENTRIES
 # ==================================================
 
-#st.divider()
-#st.subheader("✅ Selected entries")
+st.divider()
 
-selected = data[data["_id"].isin(st.session_state.selected_ids)].drop(
+st.subheader("Selected entries")
+
+selected = data[
+    data["_id"].isin(st.session_state.selected_ids)
+].drop(
     columns=["_id", "season"]
 )
 
 if selected.empty:
-  st.info("Select one or more entries above.")
+    st.info("Select one or more entries above.")
 
 else:
-  st.write(f"You selected {len(selected)} entries.")
+    st.write(f"You selected {len(selected)} entries.")
 
-  st.dataframe(
-      selected,
-      use_container_width=True,
-      hide_index=True,
-  )
+    st.dataframe(
+        selected,
+        use_container_width=True,
+        hide_index=True,
+    )
 
-  st.download_button(
-      label="⬇️ Download selected entries",
-      data=selected.to_csv(
-          index=False,
-          sep=";",
-      ).encode("utf-8-sig"),
-      file_name="my_selected_entries.csv",
-      mime="text/csv",
-  )
+    st.download_button(
+        label="⬇️ Download selected entries",
+        data=selected.to_csv(
+            index=False,
+            sep=";",
+        ).encode("utf-8-sig"),
+        file_name="my_selected_entries.csv",
+        mime="text/csv",
+    )
 
-  st.button("Clear all selections", on_click=clear_selections)
-
-# ==================================================
-# COMPLETE DATABASE
-# ==================================================
+    st.button(
+        "Clear all selections",
+        on_click=clear_selections,
+    )
