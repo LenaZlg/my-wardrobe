@@ -286,11 +286,10 @@ def load_data(path, modified_time):
     header = text.splitlines()[0]
     sep = max([";", "\t", ","], key=header.count)
 
-    df = pd.read_csv(
-        StringIO(text),
-        sep=sep,
-        dtype=str,
-    )
+
+
+    df = pd.read_csv("cloth.csv")
+    df = df.sample(frac=1).reset_index(drop=True)
 
     df.columns = (
         df.columns.astype(str)
