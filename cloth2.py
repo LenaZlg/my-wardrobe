@@ -30,7 +30,7 @@ import base64
 # Put this after st.set_page_config(...)
 
 BASE_DIR = Path(__file__).resolve().parent
-BACKGROUND_PATH = BASE_DIR / "background.jpg"
+BACKGROUND_PATH = BASE_DIR / "IMG-20261024-WA0042.jpg"
 
 if BACKGROUND_PATH.is_file():
     encoded_image = base64.b64encode(
