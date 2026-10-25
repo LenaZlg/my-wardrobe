@@ -22,15 +22,57 @@ st.set_page_config(
 
 # ==================================================
 # CUSTOM DESIGN
-# ==================================================
+# 
 
-st.markdown("""
-<style>
-/* Main background */
-.stApp {
-    background-color: #F7F6F2;
-    color: #292D28;
-}
+
+import base64
+
+# Put this after st.set_page_config(...)
+
+BASE_DIR = Path(__file__).resolve().parent
+BACKGROUND_PATH = BASE_DIR / "background.jpg"
+
+if BACKGROUND_PATH.is_file():
+    encoded_image = base64.b64encode(
+        BACKGROUND_PATH.read_bytes()
+    ).decode()
+
+    st.markdown(
+        f"""
+        <style>
+        [data-testid="stAppViewContainer"] {{
+            background-image:
+                linear-gradient(
+                    rgba(247, 246, 242, 0.35),
+                    rgba(247, 246, 242, 0.35)
+                ),
+                url("data:image/jpeg;base64,{encoded_image}");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+
+        [data-testid="stHeader"] {{
+            background: transparent;
+        }}
+
+        [data-testid="stSidebar"] {{
+            background-color: rgba(234, 237, 229, 0.94);
+        }}
+
+        [data-testid="stVerticalBlockBorderWrapper"] {{
+            background-color: rgba(255, 255, 255, 0.94);
+            border-radius: 16px;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+else:
+    st.warning("Add background.jpg to your app folder.")
+
 
 /* Sidebar */
 [data-testid="stSidebar"] {
