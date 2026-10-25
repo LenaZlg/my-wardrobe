@@ -208,44 +208,6 @@ st.markdown(
 )
 
 
-# ==================================================
-# APP TITLE
-# ==================================================
-
-st.markdown(
-    """
-    <div style="padding: 8px 0 24px 0;">
-        <div style="
-            font-size: 12px;
-            letter-spacing: 4px;
-            color: #000000;
-            font-weight: 600;
-            text-transform: uppercase;
-        ">
-            YOUR PERSONAL WARDROBE
-        </div>
-
-        <div style="
-            font-size: 42px;
-            font-weight: 750;
-            letter-spacing: -2px;
-            color: #000000;
-            line-height: 1.2;
-        ">
-            clothsloth<span style="color:#526B52;">.</span>
-        </div>
-
-        <div style="
-            font-size: 15px;
-            color: #000000;
-            margin-top: 8px;
-        ">
-            Find your style. Rediscover your wardrobe.
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
 
 
 # ==================================================
