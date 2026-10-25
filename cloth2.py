@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from io import StringIO
 import base64
@@ -29,7 +28,7 @@ BACKGROUND_PATH = BASE_DIR / "IMG-20261024-WA0042.jpg"
 
 
 # ==================================================
-# BACKGROUND IMAGE & CUSTOM DESIGN
+# BACKGROUND IMAGE
 # ==================================================
 
 if BACKGROUND_PATH.is_file():
@@ -38,25 +37,24 @@ if BACKGROUND_PATH.is_file():
     ).decode("utf-8")
 
     background_css = f"""
-    background-image:
-        linear-gradient(
-            rgba(247, 246, 242, 0.35),
-            rgba(247, 246, 242, 0.35)
-        ),
-        url("data:image/jpeg;base64,{encoded_image}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+        background-image:
+            linear-gradient(
+                rgba(247, 246, 242, 0.35),
+                rgba(247, 246, 242, 0.35)
+            ),
+            url("data:image/jpeg;base64,{encoded_image}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     """
 else:
     background_css = "background-color: #F7F6F2;"
 
-    st.warning(
-        "Background image not found. "
-        "Place IMG-20261024-WA0042.jpg next to cloth2.py."
-    )
 
+# ==================================================
+# CUSTOM DESIGN
+# ==================================================
 
 st.markdown(
     f"""
@@ -67,12 +65,12 @@ st.markdown(
         {background_css}
     }}
 
-    /* Transparent header */
+    /* Header */
     [data-testid="stHeader"] {{
         background: transparent;
     }}
 
-    /* Main page spacing */
+    /* Page spacing */
     .block-container {{
         padding-top: 2rem;
         padding-bottom: 3rem;
@@ -84,13 +82,40 @@ st.markdown(
         border-right: 1px solid #D8DED2;
     }}
 
-    /* Headings */
-    h1, h2, h3 {{
-        color: #354638 !important;
-        letter-spacing: -0.5px;
+    /* BLACK TEXT THROUGHOUT THE APP */
+    .stApp,
+    .stApp p,
+    .stApp span,
+    .stApp label,
+    .stApp li,
+    .stApp strong,
+    .stApp small,
+    .stApp summary,
+    .stApp [data-testid="stMarkdownContainer"],
+    .stApp [data-testid="stMarkdownContainer"] p,
+    .stApp [data-testid="stMarkdownContainer"] span,
+    .stApp [data-testid="stCaptionContainer"],
+    .stApp [data-testid="stCaptionContainer"] p,
+    .stApp [data-testid="stWidgetLabel"] p,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] small,
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{
+        color: #000000 !important;
     }}
 
-    /* Card containers */
+    /* Headings */
+    .stApp h1,
+    .stApp h2,
+    .stApp h3,
+    .stApp h4,
+    .stApp h5,
+    .stApp h6 {{
+        color: #000000 !important;
+    }}
+
+    /* Card appearance */
     [data-testid="stVerticalBlockBorderWrapper"] {{
         background-color: rgba(255, 255, 255, 0.94);
         border: 1px solid #E5E7E0;
@@ -104,42 +129,77 @@ st.markdown(
         box-shadow: 0 5px 16px rgba(40, 50, 40, 0.12);
     }}
 
-    /* Caption text */
-    [data-testid="stCaptionContainer"] {{
-        color: #788174;
+    /* Text inputs */
+    .stApp input,
+    .stApp textarea,
+    .stApp [data-baseweb="select"] input {{
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
     }}
 
-    /* Buttons */
+    /* Selected values in dropdowns */
+    .stApp [data-baseweb="select"] {{
+        color: #000000 !important;
+    }}
+
+    /* Placeholder text */
+    .stApp input::placeholder,
+    .stApp textarea::placeholder {{
+        color: #555555 !important;
+        -webkit-text-fill-color: #555555 !important;
+        opacity: 1;
+    }}
+
+    /* Expandable details */
+    [data-testid="stExpander"] {{
+        background-color: rgba(244, 246, 240, 0.96);
+        border: 1px solid #E0E5DA;
+        border-radius: 10px;
+    }}
+
+    [data-testid="stExpander"] p,
+    [data-testid="stExpander"] span,
+    [data-testid="stExpander"] label {{
+        color: #000000 !important;
+    }}
+
+    /* Green buttons with white text */
     .stButton > button,
     .stDownloadButton > button {{
         background-color: #526B52;
-        color: white;
+        color: #FFFFFF !important;
         border: none;
         border-radius: 10px;
         transition: background-color 0.2s;
     }}
 
+    .stButton > button *,
+    .stDownloadButton > button * {{
+        color: #FFFFFF !important;
+    }}
+
     .stButton > button:hover,
     .stDownloadButton > button:hover {{
         background-color: #3D543E;
-        color: white;
+        color: #FFFFFF !important;
         border: none;
     }}
 
-    /* Expandable details */
-    [data-testid="stExpander"] {{
-        background-color: rgba(244, 246, 240, 0.95);
-        border: 1px solid #E0E5DA;
-        border-radius: 10px;
+    /* Checkboxes */
+    [data-testid="stCheckbox"] label,
+    [data-testid="stCheckbox"] p {{
+        color: #000000 !important;
     }}
 
-    /* Input fields */
-    [data-testid="stTextInput"] input {{
-        border-radius: 10px;
+    /* Slider labels and values */
+    [data-testid="stSlider"] label,
+    [data-testid="stSlider"] [data-testid="stMarkdownContainer"] {{
+        color: #000000 !important;
     }}
 
-    [data-testid="stMultiSelect"] [data-baseweb="select"] {{
-        border-radius: 10px;
+    /* Dataframe text */
+    [data-testid="stDataFrame"] {{
+        color: #000000;
     }}
 
     </style>
@@ -158,7 +218,7 @@ st.markdown(
         <div style="
             font-size: 12px;
             letter-spacing: 4px;
-            color: #526B52;
+            color: #000000;
             font-weight: 600;
             text-transform: uppercase;
         ">
@@ -169,15 +229,15 @@ st.markdown(
             font-size: 42px;
             font-weight: 750;
             letter-spacing: -2px;
-            color: #354638;
+            color: #000000;
             line-height: 1.2;
         ">
-            clothsloth<span style="color:#A4B59B;">.</span>
+            clothsloth<span style="color:#526B52;">.</span>
         </div>
 
         <div style="
             font-size: 15px;
-            color: #626B60;
+            color: #000000;
             margin-top: 8px;
         ">
             Find your style. Rediscover your wardrobe.
@@ -226,10 +286,8 @@ required_cols = [
 
 st.sidebar.caption("Database: cloth.csv")
 
-
 if not FILE_PATH.is_file():
     st.error("Cannot find cloth.csv.")
-
     st.write("Python script:", str(Path(__file__).resolve()))
     st.write("Folder being searched:", str(BASE_DIR))
     st.write("Expected CSV path:", str(FILE_PATH))
@@ -241,7 +299,6 @@ if not FILE_PATH.is_file():
         "Place cloth.csv in the same folder as this Python script. "
         "Check the exact filename and file extension."
     )
-
     st.stop()
 
 
@@ -261,7 +318,9 @@ def read_text(path):
 def load_data(path, modified_time):
     text = read_text(path)
 
-    # Detect CSV delimiter from the header.
+    if not text.splitlines():
+        return pd.DataFrame()
+
     header = text.splitlines()[0]
     sep = max([";", "\t", ","], key=header.count)
 
@@ -271,7 +330,6 @@ def load_data(path, modified_time):
         dtype=str,
     )
 
-    # Clean column names.
     df.columns = (
         df.columns.astype(str)
         .str.replace("\ufeff", "", regex=False)
@@ -282,7 +340,6 @@ def load_data(path, modified_time):
 
     df = df.dropna(how="all").reset_index(drop=True)
 
-    # Season columns -> clean 0/1 integers.
     for flag in SEASON_FLAGS:
         if flag in df.columns:
             df[flag] = (
@@ -350,10 +407,7 @@ st.sidebar.header("🔎 Filter & Ansicht")
 
 def get_options(column):
     values = data[column].dropna().astype(str).str.strip()
-
-    return sorted(
-        values[values != ""].unique().tolist()
-    )
+    return sorted(values[values != ""].unique().tolist())
 
 
 def reset_filters():
@@ -530,13 +584,11 @@ else:
 
             with column:
                 with st.container(border=True):
-                    st.markdown(
-                        f"### #{int(item_id) + 1}"
-                    )
+                    st.markdown(f"### #{int(item_id) + 1}")
 
                     st.caption(
-                        f"🌦️ {item['season'] or '—'}  ·  "
-                        f"🎨 {item[style_col] or '—'}  ·  "
+                        f"🌦️ {item['season'] or '—'} · "
+                        f"🎨 {item[style_col] or '—'} · "
                         f"👟 {item[shoe_type_col] or '—'}"
                     )
 
@@ -567,7 +619,6 @@ else:
 # ==================================================
 
 st.divider()
-
 st.subheader("Selected entries")
 
 selected = data[
@@ -602,3 +653,4 @@ else:
         "Clear all selections",
         on_click=clear_selections,
     )
+
