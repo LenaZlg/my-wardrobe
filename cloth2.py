@@ -276,54 +276,33 @@ def clear_selections():
   st.session_state.selected_ids = set()
 
 
-if filtered.empty:
-  st.info("No entries match your current filters.")
 
-else:
-  # Nutzt jetzt den dynamischen Slider-Wert für die Spaltenanzahl
-  rows = [
-      filtered.iloc[i : i + cards_per_row]
-      for i in range(0, len(filtered), cards_per_row)
-  ]
+with column:
+    with st.container(border=True, gap="small"):
+        st.markdown(f"**#{int(item_id) + 1}**")
 
-  for row_items in rows:
-    columns = st.columns(cards_per_row, gap="small")
-
-    for column, (_, item) in zip(columns, row_items.iterrows()):
-      item_id = item["_id"]
-      checkbox_key = f"select_{item_id}"
-
-      if checkbox_key not in st.session_state:
-        st.session_state[checkbox_key] = (
-            item_id in st.session_state.selected_ids
+        st.caption(
+            f"{item['season'] or '—'} · "
+            f"{item[style_col] or '—'} · "
+            f"{item[shoe_type_col] or '—'}"
         )
 
-      with column:
-        with st.container(border=True):
-          st.markdown(f"**Entry {int(item_id) + 1}**")
+        with st.expander("Details"):
+            for name in clothing_cols:
+                value = item[name]
 
-          st.caption(
-              f"🌦️ {item['season'] or '—'}  ·  "
-              f"🎨 {item[style_col] or '—'}  ·  "
-              f"👟 {item[shoe_type_col] or '—'}"
-          )
+                if pd.isna(value) or not str(value).strip():
+                    continue
 
-          value_columns = st.columns(2, gap="small")
-          for index, name in enumerate(clothing_cols):
-            value = item[name]
-            with value_columns[index % 2]:
-              st.caption(name.title())
-              if pd.isna(value) or str(value).strip() == "":
-                st.write("—")
-              else:
-                st.write(str(value))
+                st.markdown(f"**{name.title()}:** {value}")
 
-          st.checkbox(
-              "Select",
-              key=checkbox_key,
-              on_change=update_selection,
-              args=(item_id,),
-          )
+        st.checkbox(
+            "Select",
+            key=checkbox_key,
+            on_change=update_selection,
+            args=(item_id,),
+        )
+
 
 # ==================================================
 # SELECTED ENTRIES
