@@ -546,7 +546,7 @@ else:
 
             with column:
                 with st.container(border=True):
-                    st.markdown(f"### #{int(item_id) + 1}")
+                   # st.markdown(f"### #{int(item_id) + 1}")
 
                     st.caption(
                         f"🌦️ {item['season'] or '—'} · "
