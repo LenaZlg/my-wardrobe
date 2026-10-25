@@ -2,6 +2,10 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+
+
+
+
 # ==================================================
 # PAGE SETTINGS
 # ==================================================
@@ -15,6 +19,101 @@ st.set_page_config(
 
 #st.title("Lz")
 #st.write("Search, filter, select, and download your entries.")
+
+# ==================================================
+# CUSTOM DESIGN
+# ==================================================
+
+st.markdown("""
+<style>
+/* Main background */
+.stApp {
+    background-color: #F7F6F2;
+    color: #292D28;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #EAEDE5;
+    border-right: 1px solid #D8DED2;
+}
+
+/* Main content spacing */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+/* Entry cards */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7E0;
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(40, 50, 40, 0.04);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Hover effect */
+[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    border-color: #A4B59B;
+    box-shadow: 0 5px 16px rgba(40, 50, 40, 0.09);
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #354638 !important;
+    letter-spacing: -0.5px;
+}
+
+/* Small text */
+[data-testid="stCaptionContainer"] {
+    color: #788174;
+}
+
+/* Buttons */
+.stButton > button,
+.stDownloadButton > button {
+    background-color: #526B52;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s;
+}
+
+/* Button hover */
+.stButton > button:hover,
+.stDownloadButton > button:hover {
+    background-color: #3D543E;
+    color: white;
+    border: none;
+}
+
+/* Expandable details */
+[data-testid="stExpander"] {
+    background-color: #F4F6F0;
+    border: 1px solid #E0E5DA;
+    border-radius: 10px;
+}
+
+/* Text input fields */
+[data-testid="stTextInput"] input {
+    border-radius: 10px;
+}
+
+/* Multiselect fields */
+[data-testid="stMultiSelect"] [data-baseweb="select"] {
+    border-radius: 10px;
+}
+
+/* Checkboxes */
+[data-testid="stCheckbox"] {
+    padding-top: 4px;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # ==================================================
 # COLUMN NAMES
