@@ -255,53 +255,76 @@ st.session_state.selected_ids.intersection_update(set(data["_id"]))
 
 #st.divider()
 
+
 # ==================================================
 # DISPLAY ENTRIES
 # ==================================================
 
-
 def update_selection(item_id):
-  key = f"select_{item_id}"
+    key = f"select_{item_id}"
 
-  if st.session_state.get(key, False):
-    st.session_state.selected_ids.add(item_id)
-  else:
-    st.session_state.selected_ids.discard(item_id)
+    if st.session_state.get(key, False):
+        st.session_state.selected_ids.add(item_id)
+    else:
+        st.session_state.selected_ids.discard(item_id)
 
 
 def clear_selections():
-  for key in list(st.session_state.keys()):
-    if key.startswith("select_"):
-      del st.session_state[key]
-  st.session_state.selected_ids = set()
+    for key in list(st.session_state.keys()):
+        if key.startswith("select_"):
+            del st.session_state[key]
+    st.session_state.selected_ids = set()
 
 
+if filtered.empty:
+    st.info("No entries match your current filters.")
 
-with column:
-    with st.container(border=True, gap="small"):
-        st.markdown(f"**#{int(item_id) + 1}**")
+else:
+    rows = [
+        filtered.iloc[i : i + cards_per_row]
+        for i in range(0, len(filtered), cards_per_row)
+    ]
 
-        st.caption(
-            f"{item['season'] or '—'} · "
-            f"{item[style_col] or '—'} · "
-            f"{item[shoe_type_col] or '—'}"
-        )
+    for row_items in rows:
+        columns = st.columns(cards_per_row, gap="small")
 
-        with st.expander("Details"):
-            for name in clothing_cols:
-                value = item[name]
+        for column, (_, item) in zip(columns, row_items.iterrows()):
+            item_id = item["_id"]
+            checkbox_key = f"select_{item_id}"
 
-                if pd.isna(value) or not str(value).strip():
-                    continue
+            if checkbox_key not in st.session_state:
+                st.session_state[checkbox_key] = (
+                    item_id in st.session_state.selected_ids
+                )
 
-                st.markdown(f"**{name.title()}:** {value}")
+            with column:
+                with st.container(border=True, gap="small"):
+                    st.markdown(f"**#{int(item_id) + 1}**")
 
-        st.checkbox(
-            "Select",
-            key=checkbox_key,
-            on_change=update_selection,
-            args=(item_id,),
-        )
+                    st.caption(
+                        f"{item['season'] or '—'} · "
+                        f"{item[style_col] or '—'} · "
+                        f"{item[shoe_type_col] or '—'}"
+                    )
+
+                    with st.expander("Details"):
+                        for name in clothing_cols:
+                            value = item[name]
+
+                            if pd.isna(value) or not str(value).strip():
+                                continue
+
+                            st.markdown(
+                                f"**{name.title()}:** {value}"
+                            )
+
+                    st.checkbox(
+                        "Select",
+                        key=checkbox_key,
+                        on_change=update_selection,
+                        args=(item_id,),
+                    )
+
 
 
 # ==================================================
