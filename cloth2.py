@@ -286,10 +286,7 @@ def load_data(path, modified_time):
     header = text.splitlines()[0]
     sep = max([";", "\t", ","], key=header.count)
 
-
-
-    df = pd.read_csv("cloth.csv")
-    df = df.sample(frac=1).reset_index(drop=True)
+    df = pd.read_csv(StringIO(text), sep=sep)
 
     df.columns = (
         df.columns.astype(str)
@@ -299,15 +296,8 @@ def load_data(path, modified_time):
         .str.strip()
     )
 
-    df = df.dropna(how="all").reset_index(drop=True)
-
-    for flag in SEASON_FLAGS:
-        if flag in df.columns:
-            df[flag] = (
-                pd.to_numeric(df[flag], errors="coerce")
-                .fillna(0)
-                .astype(int)
-            )
+    # Randomize the order of clothing items
+    df = df.sample(frac=1).reset_index(drop=True)
 
     return df
 
